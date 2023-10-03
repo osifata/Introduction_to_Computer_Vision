@@ -1,5 +1,6 @@
-import numpy as np
+from collections import defaultdict
 
+import numpy as np
 
 def nominal_permissions(name):
     with open(name) as text_file:
@@ -8,13 +9,14 @@ def nominal_permissions(name):
     array = np.loadtxt(name, skiprows=2)
     max_pixels = 0
     count_pixels = 0
-    for a in array:
-        if a.any() == 1:
-            count_pixels += 1
-        else:
-            if count_pixels > max_pixels:
-                max_pixels = count_pixels
-            count_pixels = 0
+    for i in range(0, array.shape[0]):
+        for j in range(0, array.shape[1]):
+            if array[i, j] == 1:
+                count_pixels += 1
+            else:
+                if count_pixels > max_pixels:
+                    max_pixels = count_pixels
+                count_pixels = 0
     if max_pixels != 0:
         permission = mm / max_pixels
     else:
